@@ -25,7 +25,7 @@ fun main() {
     val wordsStream = builder.stream<String, String>("WordsTopic")
 
     wordsStream
-        .mapValues { count -> count.count() }
+        .mapValues { message -> message.count() }
         .to("CountsTopic", Produced.with(Serdes.String(), Serdes.Integer()))
 
     val topology = builder.build()
