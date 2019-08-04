@@ -4,7 +4,6 @@ import mu.KotlinLogging
 import org.apache.kafka.clients.admin.AdminClient
 import org.apache.kafka.clients.admin.NewTopic
 import org.apache.kafka.common.serialization.Serdes
-import org.apache.kafka.common.serialization.Serializer
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.StreamsConfig
@@ -23,9 +22,9 @@ fun main() {
     createTopic(props)
 
     val builder = StreamsBuilder()
-    val textLines = builder.stream<String, String>("WordsTopic")
+    val wordsStream = builder.stream<String, String>("WordsTopic")
 
-    textLines
+    wordsStream
         .mapValues { count -> count.count() }
         .to("CountsTopic", Produced.with(Serdes.String(), Serdes.Integer()))
 
