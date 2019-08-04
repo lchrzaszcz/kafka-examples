@@ -1,6 +1,6 @@
-package dev.chrzaszcz.kafka.examples
+package dev.chrzaszcz.kafka.examples.simple
 
-import dev.chrzaszcz.kafka.examples.consumer.Consumer
+import dev.chrzaszcz.kafka.examples.simple.consumer.Consumer
 import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}

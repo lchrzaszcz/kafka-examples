@@ -1,4 +1,4 @@
-package dev.chrzaszcz.kafka.examples
+package dev.chrzaszcz.kafka.examples.simple
 
 import mu.KotlinLogging
 import org.apache.kafka.clients.producer.KafkaProducer

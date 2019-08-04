@@ -1,13 +1,13 @@
-package dev.chrzaszcz.kafka.examples.consumer
+package dev.chrzaszcz.kafka.examples.simple.consumer
 
-import dev.chrzaszcz.kafka.examples.TOPIC
+import dev.chrzaszcz.kafka.examples.simple.TOPIC
 import mu.KLogging
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import java.time.Duration
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
-class Consumer: Runnable {
+class Consumer : Runnable {
 
     private val shouldConsume = AtomicBoolean(true)
 
@@ -20,10 +20,14 @@ class Consumer: Runnable {
     private fun fetchContinuously(kafkaConsumer: KafkaConsumer<String, String>) {
         while (shouldConsume.get()) {
 
-            val messages = kafkaConsumer.poll(Duration.ofMillis(1000))
+            try {
+                val messages = kafkaConsumer.poll(Duration.ofMillis(1000))
 
-            messages.forEach {
-                logger.info { "Consumed $it" }
+                messages.forEach {
+                    logger.info { "Consumed $it" }
+                }
+            } catch (e: Exception) {
+                logger.error { "Failed to consume" }
             }
         }
         logger.info { "Exiting consumer loop" }
@@ -44,5 +48,5 @@ class Consumer: Runnable {
         return KafkaConsumer(properties)
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }
