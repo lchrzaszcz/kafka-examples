@@ -15,7 +15,7 @@ private val logger = KotlinLogging.logger {}
 
 fun main() {
     val props = Properties()
-    props[StreamsConfig.APPLICATION_ID_CONFIG] = "wordcount-application"
+    props[StreamsConfig.APPLICATION_ID_CONFIG] = "count-application"
     props[StreamsConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9092"
     props[StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG] = Serdes.String().javaClass
     props[StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG] = Serdes.String().javaClass
@@ -23,13 +23,15 @@ fun main() {
     createTopic(props)
 
     val builder = StreamsBuilder()
-    val textLines: KStream<String, String> = builder.stream<String, String>("WordsTopic")
+    val textLines = builder.stream<String, String>("WordsTopic")
 
     textLines
         .mapValues { count -> count.count() }
         .to("CountsTopic", Produced.with(Serdes.String(), Serdes.Integer()))
 
-    val streams = KafkaStreams(builder.build(), props)
+    val topology = builder.build()
+
+    val streams = KafkaStreams(topology, props)
     streams.start()
 }
 
