@@ -30,6 +30,8 @@ fun main() {
 
     val topology = builder.build()
 
+    logger.info { topology.describe() }
+
     val streams = KafkaStreams(topology, props)
     streams.start()
 }
