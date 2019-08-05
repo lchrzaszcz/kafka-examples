@@ -7,6 +7,7 @@ import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.StreamsConfig
+import org.apache.kafka.streams.Topology
 import org.apache.kafka.streams.kstream.*
 import java.util.*
 
@@ -41,3 +42,4 @@ private fun createTopic(props: Properties) {
     val adminClient = AdminClient.create(props)
     adminClient.createTopics(listOf(NewTopic("WordsTopic", 1, 1)))
 }
+
