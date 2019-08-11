@@ -24,13 +24,24 @@ fun main() {
     val topology = Topology()
 
     topology.addSource("mySource", "WordsTopic")
-    topology.addProcessor("myProcessor", ProcessorSupplier { StringCounter() }, "mySource")
+
+    topology.addProcessor("myCharacterCounter", ProcessorSupplier { StringCounter() }, "mySource")
+    topology.addProcessor("myOddChecker", ProcessorSupplier { OddChecker() }, "mySource")
+
     topology.addSink(
-        "mySink",
+        "myCharacterCountSink",
         "CountsTopic",
         Serdes.String().serializer(),
         Serdes.Integer().serializer(),
-        "myProcessor"
+        "myCharacterCounter"
+    )
+
+    topology.addSink(
+        "myOddSink",
+        "OddTopic",
+        Serdes.String().serializer(),
+        Serdes.Integer().serializer(),
+        "myOddChecker"
     )
 
     logger.info { topology.describe() }
